@@ -91,7 +91,8 @@ int main(int argc, char** argv) {
 
 	newHeight = size.height/2;
 	newWidth = size.width/2;
-
+	
+	//trocando os quadrantes em diagonal na imagem
 	Mat b1 = image( Rect(0, 0, newHeight, newWidth) );
 	Mat b2 = image( Rect(newHeight, 0, newHeight, newWidth) );
 	Mat b3 = image( Rect(0, newWidth, newHeight, newWidth) );
