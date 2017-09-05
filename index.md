@@ -1,7 +1,6 @@
-## Welcome to my GitHub Page
+## Processamento Digital de Imagens
 
-### Home
 
 Essa página tem o objetivo expor os exercicios realizados na disciplina de processamento digital de imagens - DCA0445.
 
-[Unidade 1](Exercicios da Unidade 1)
+[Unidade 1]()
