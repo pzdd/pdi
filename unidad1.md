@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 
 ```
 
-![Image](src)
+![Figura 1: Resultado](/images/tela1.png)
 
 
 
