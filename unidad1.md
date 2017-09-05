@@ -71,5 +71,44 @@ int main(int argc, char** argv) {
 
 ### Exercício 3.2 B
 
+Esta tarefa trata-se de trocar as regiões de uma imagem.
+
+```cpp
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace std;
+using namespace cv;
+
+int main(int argc, char** argv) {
+	Mat image, newImage;
+	Size size;
+	int newHeight, newWidth;
+
+	image = imread("biel.png", CV_LOAD_IMAGE_GRAYSCALE);
+	image.copyTo(newImage);
+	size = image.size();
+
+	newHeight = size.height/2;
+	newWidth = size.width/2;
+
+	Mat b1 = image( Rect(0, 0, newHeight, newWidth) );
+	Mat b2 = image( Rect(newHeight, 0, newHeight, newWidth) );
+	Mat b3 = image( Rect(0, newWidth, newHeight, newWidth) );
+	Mat b4 = image( Rect(newHeight, newWidth, newHeight, newWidth) );
+
+	b4.copyTo( newImage( Rect(0, 0, newHeight, newWidth) ) ); // 1
+	b3.copyTo( newImage( Rect(newHeight, 0, newHeight, newWidth) ) ); // 2
+	b2.copyTo( newImage( Rect(0, newWidth, newHeight, newWidth) ) ); // 3
+	b1.copyTo( newImage( Rect(newHeight, newWidth, newHeight, newWidth) ) ); // 4
+
+	imshow("image", newImage);
+	waitKey();
+
+	return 0;
+}
+```
+![Figura 2: Resultado](/images/tela2.png)
+
 ### Exercício 4.2
 
