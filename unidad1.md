@@ -6,7 +6,7 @@
 
 O objetivo desse programa é selecinar uma região da imagem e substituir essa região pelo seu negativo. O negativo de uma imagem é obtido quando se subtitui o valor de cada pixel pelo seu complemento.
 
-```markdown
+```cpp
 #include <iostream>
 #include <opencv2/opencv.hpp>
 
