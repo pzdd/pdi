@@ -113,3 +113,71 @@ int main(int argc, char** argv) {
 
 ### Exercício 4.2
 
+O objetivo desse exercicio é identicar em uma imagem regiões com ou sem buracos internos presentes na cena.
+Os objetos que tocam as bordas foram desconsiderados, pois não dão informaçes suficientes para fazer afirmaçes sobre o mesmo.
+
+```cpp
+#include <iostream>
+#include <opencv2/opencv.hpp>
+
+using namespace cv;
+using namespace std;
+
+int main(int argc, char** argv){
+	Mat image, mask;
+	int width, height;
+	int objetos = 0;
+	int buracos = 0;
+
+	CvPoint p;
+	image = imread("bolhas.png",CV_LOAD_IMAGE_GRAYSCALE);
+
+	if(!image.data)
+	{
+		cout << "[erro]\n";
+		return(-1);
+	}
+
+	width  = image.size().width;
+	height = image.size().height;
+
+	p.x = 0;
+	p.y = 0;
+
+	//Primeiro passo
+  //Elimando objetos das bordas
+	for (int i = 0; i < width; i++){
+		image.at<uchar>(i, 0) = 255;
+		image.at<uchar>(i, height-1)= 255;
+	}
+	for (int i = 0; i < height; i++){
+		image.at<uchar>(0, i) = 255;
+		image.at<uchar>(width-1, i) = 255;
+	}
+	floodFill(image, p, 0);
+
+  //alterando o background
+	floodFill(image, p, 244);
+
+	//Segundo passo
+  //Contando objetos
+	for(int i = 0; i < height; i++){
+		for(int j = 0; j < width; j++){
+			p.x = j;
+			p.y = i;
+	  	if(image.at<uchar>(i,j) == 255) floodFill(image, p, ++objetos);
+	  	if(image.at<uchar>(i,j) == 0) floodFill(image, p, 244 - (++buracos));
+		}
+	}
+
+	cout << "Objetos: "<< objetos << "\nBuracos: " << buracos << endl;
+
+	imshow("image", image);
+	imwrite("bolhas_saida.png", image);
+	waitKey();
+	return 0;
+}
+
+```
+
+![Figura 3: Resultado](/images/tela3.png)
