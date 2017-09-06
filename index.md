@@ -6,4 +6,4 @@ Essa página tem o objetivo expor os exercicios realizados na disciplina de proc
 
 #### Requisitos
 
-Para compilar os códigos é necessário ter a biblioteca [OpenCV](http://opencv.org/) instalada e utilizar esse [Makefile]()
+Para compilar os códigos é necessário ter a biblioteca [OpenCV](http://opencv.org/) instalada e utilizar esse [Makefile](/Makefile)
