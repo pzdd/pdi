@@ -223,11 +223,11 @@ Utilizando os programas exemplos/canny.cpp e exemplos/pontilhismo.cpp como refer
 
 Imagem original utilizada:
 
-![Figura 5: Imagem Original](/images/tela5.png)
+![Figura 5: Imagem Original](/images/tela5.jpg)
 
 Imagem resultante:
 
-![Figura 6: Resultado](/images/tela6.png)
+![Figura 6: Resultado](/images/tela6.jpg)
 
 ```cpp
 #include <iostream>
