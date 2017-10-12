@@ -221,6 +221,105 @@ void deslocaDFT(Mat& image ){
 
 Utilizando os programas exemplos/canny.cpp e exemplos/pontilhismo.cpp como referência, implemente um programa cannypoints.cpp. A idéia é usar as bordas produzidas pelo algoritmo de Canny para melhorar a qualidade da imagem pontilhista gerada. A forma como a informação de borda será usada é livre. Entretanto, são apresentadas algumas sugestões de técnicas que poderiam ser utilizadas:
 
+Imagem original utilizada:
+
+![Figura 5: Imagem Original](/images/tela5.png)
+
+Imagem resultante:
+
+![Figura 6: Resultado](/images/tela6.png)
+
 ```cpp
+#include <iostream>
+#include <opencv2/opencv.hpp>
+#include <opencv2/core/core.hpp>
+#include <opencv2/highgui/highgui.hpp>
+#include <fstream>
+#include <iomanip>
+#include <vector>
+#include <algorithm>
+#include <numeric>
+#include <ctime>
+#include <cstdlib>
+
+using namespace std;
+using namespace cv;
+
+#define STEP 5
+#define JITTER 3
+#define DIR_IMAGEM "big_ben.jpg"
+
+int top_slider = 10;
+int top_slider_max = 200;
+int rad_slider = 10;
+int rad_slider_max = 200;
+int state;
+char TrackbarName[50];
+
+Mat image, border,points;
+int width, height;
+
+void on_trackbar(int, void*){
+  vector<int> yrange;
+  vector<int> xrange;
+  Mat frame;
+  int x, y,gray;
+
+  srand(time(0));
+
+  xrange.resize(height/STEP);
+  yrange.resize(width/STEP);
+
+  iota(xrange.begin(), xrange.end(), 0);
+  iota(yrange.begin(), yrange.end(), 0);
+
+  for(uint i=0; i<xrange.size(); i++){
+    xrange[i]= xrange[i]*STEP+STEP/2;
+  }
+  for(uint i=0; i<yrange.size(); i++){
+    yrange[i]= yrange[i]*STEP+STEP/2;
+  }
+
+  points = Mat(height, width, CV_8U, Scalar(255));
+
+  random_shuffle(xrange.begin(), xrange.end());
+  for(auto i : xrange){
+    random_shuffle(yrange.begin(), yrange.end());
+    for(auto j : yrange){
+      x = i+rand()%(2*JITTER)-JITTER+1;
+      y = j+rand()%(2*JITTER)-JITTER+1;
+      gray = image.at<uchar>(x,y);
+      circle(points, Point(y,x), (rad_slider/50)+1, CV_RGB(gray,gray,gray), -1, CV_AA);
+    }
+  }
+  Canny(image, border, top_slider, 3*top_slider);
+  for(int i=0;i<height;i++){
+    for(int j=0;j<width;j++){
+      if(border.at<uchar>(i,j)==255){
+        gray = image.at<uchar>(i,j);
+      circle(points, Point(j,i), (rad_slider/50)+1, CV_RGB(gray,gray,gray), -1, CV_AA);
+    }
+  }
+}
+  imwrite(DIR_IMAGEM, points);
+  imshow("CannyPointilhismo", points);
+}
+
+int main(int argc, char**argv){
+
+  image= imread(DIR_IMAGEM,CV_LOAD_IMAGE_GRAYSCALE);
+  width=image.size().width;
+  height=image.size().height;
+  sprintf( TrackbarName, "Bordas");
+  namedWindow("CannyPointilhismo",WINDOW_AUTOSIZE);
+  createTrackbar( TrackbarName, "CannyPointilhismo", &top_slider, top_slider_max, on_trackbar);
+  on_trackbar(top_slider, 0 );
+  sprintf( TrackbarName, "Raio");
+  createTrackbar( TrackbarName, "CannyPointilhismo", &rad_slider, rad_slider_max, on_trackbar);
+  on_trackbar(rad_slider, 0 );
+
+  waitKey();
+  return 0;
+}
 
 ```
